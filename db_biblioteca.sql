@@ -29,3 +29,4 @@ observaciones TEXT,
 FOREIGN KEY (id_libro) REFERENCES libros(id),
 FOREIGN KEY (id_usuario) REFERENCES usuarios(id)
 );
+
