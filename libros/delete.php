@@ -9,4 +9,3 @@ if($stmt->execute())
     echo "Se elimino el registro";
 }
 ?>
-<meta http-equiv="refresh" content="2;url=../index.php">

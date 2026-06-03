@@ -15,24 +15,24 @@
     $consulta=mysqli_query($con,$sql);
     $libro = mysqli_fetch_array($consulta)
     ?>
-    <form action="javascript:updateLibro()" method="post" id='form-editar'>
-        <label for="titulo">Título</label>
-        <input type="text" name="titulo" value="<?php echo $libro['titulo'];?>">
+    <form action="javascript:updateLibro()" method="post" id='editar' style="width: 400px; margin: auto; padding: 20px; border: 3px solid #1cb0eb; border-radius: 5px;">
+        <label for="titulo" class="form-label">Título</label>
+        <input type="text" name="titulo" value="<?php echo $libro['titulo'];?>" class="form-control" id="validationCustom01" required>
 
         <br>
 
-        <label for="autor">Autor</label>
-        <input type="text" name="autor" value="<?php echo $libro['autor'];?>">
+        <label for="autor" class="form-label">Autor</label>
+        <input type="text" name="autor" value="<?php echo $libro['autor'];?>" class="form-control" id="validationCustom02" required>
 
         <br>
 
-        <label for="isbn">ISBN</label>
-        <input type="text" name="isbn" value="<?php echo $libro['isbn'];?>">
+        <label for="isbn" class="form-label">ISBN</label>
+        <input type="text" name="isbn" value="<?php echo $libro['isbn'];?>" class="form-control" id="validationCustom03" required>
 
         <br>
 
-        <label for="categoria">Categoría</label>
-        <select name="categoria">
+        <label for="categoria" class="form-label">Categoría</label>
+        <select name="categoria" class="form-control" id="validationCustom04" required>
             <option value="Informática" <?php echo $libro['categoria']=='Informática'?'selected':'';?>>Informática</option>
             <option value="Matemáticas" <?php echo $libro['categoria']=='Matemáticas'?'selected':'';?>>Matemáticas</option>
             <option value="Literatura"  <?php echo $libro['categoria']=='Literatura'?'selected':'';?>>Literatura</option>
@@ -46,11 +46,11 @@
 
         <br>
 
-        <label for="stock">Stock</label>
-        <input type="number" name="stock" value="<?php echo $libro['stock'];?>" min="0">
+        <label for="stock" class="form-label">Stock</label>
+        <input type="number" name="stock" value="<?php echo $libro['stock'];?>" class="form-control" id="validationCustom05" min="0" required>
 
         <input type="hidden" name="id" value="<?php echo $libro['id']?>">
-        <input type="submit" value="Enviar">
+        <button type="submit" class="btn btn-primary">Enviar</button>
     </form>
 </body>
 </html>

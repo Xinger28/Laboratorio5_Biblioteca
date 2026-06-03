@@ -18,3 +18,14 @@ telefono VARCHAR(20),
 correo VARCHAR(100)
 );
 
+CREATE TABLE prestamos (
+id INT PRIMARY KEY AUTO_INCREMENT,
+id_libro INT NOT NULL,
+id_usuario INT NOT NULL,
+fecha_prestamo DATE NOT NULL,
+fecha_devolucion DATE,
+estado ENUM('Activo','Devuelto','Vencido') DEFAULT 'Activo',
+observaciones TEXT,
+FOREIGN KEY (id_libro) REFERENCES libros(id),
+FOREIGN KEY (id_usuario) REFERENCES usuarios(id)
+);

@@ -12,7 +12,7 @@ function cargarContenido(abrir) {
 			}
 
 			if (abrir.includes('libros/')) {
-				let html = `<table>
+				let html = `<table class="table table-striped">
 					<tr>
 						<th>Título</th>
 						<th>Autor</th>
@@ -27,8 +27,8 @@ function cargarContenido(abrir) {
 							<td>${libro.autor}</td>
 							<td>${libro.stock}</td>
 							<td>
-								<button onclick="cargarEditarLibro(${libro.id})">Editar</button>
-								<button><a href="libros/delete.php?id=${libro.id}">Eliminar</a></button>
+								<button onclick="cargarEditarLibro(${libro.id})" type="button" class="btn btn-success">Editar</button>
+								<button onclick="eliminarLibro(${libro.id})" type="button" class="btn btn-danger">Eliminar</button>
 							</td>
 						</tr>
 					`;
@@ -40,7 +40,7 @@ function cargarContenido(abrir) {
 			}
 
 			if (abrir.includes('usuarios/')) {
-				let html = `<table>
+				let html = `<table class="table table-striped">
 					<tr>
 						<th>Nombre</th>
 						<th>Carnet</th>
@@ -57,8 +57,8 @@ function cargarContenido(abrir) {
 							<td>${usuario.telefono ?? ''}</td>
 							<td>${usuario.correo ?? ''}</td>
 							<td>
-								<button onclick="cargarEditarUsuario(${usuario.id})">Editar</button>
-								<button><a href="usuarios/delete.php?id=${usuario.id}">Eliminar</a></button>
+								<button onclick="cargarEditarUsuario(${usuario.id})" type="button" class="btn btn-success">Editar</button>
+								<button onclick="eliminarUsuario(${usuario.id})" type="button" class="btn btn-danger">Eliminar</button>
 							</td>
 						</tr>
 					`;
@@ -69,11 +69,8 @@ function cargarContenido(abrir) {
 				return;
 			}
 
-			contenedor.innerHTML = '<p>Tipo de contenido no soportado.</p>';
 		})
-		.catch(() => {
-			contenedor.innerHTML = '<p>Error al cargar el contenido.</p>';
-		});
+
 }
 
 function cargarContenidoform(abrir) {
@@ -104,7 +101,7 @@ function createLibro() {
 function cargarEditarLibro(id) {
 	var contenedor;
 	contenedor = document.getElementById('contenido');
-	fetch('libros/form-editar.php?id='+id)
+	fetch('libros/editar.php?id='+id)
 		.then(response => response.text())
 		.then(data => contenedor.innerHTML=data);
 }
@@ -112,7 +109,7 @@ function cargarEditarLibro(id) {
 function updateLibro() {
 	var contenedor;
 	contenedor = document.getElementById('contenido');
-	formeditar = document.getElementById('form-editar');
+	formeditar = document.getElementById('editar');
 	var datos = new FormData(formeditar);
 	fetch("libros/update.php",
 		{method:"POST",
@@ -121,6 +118,28 @@ function updateLibro() {
 		.then(data => contenedor.innerHTML=data);
 }
 
+function eliminarLibro(id) {
+	var modal = document.querySelector('.modal');
+	modal.style.visibility = 'visible';
+	var btnConfirmar = document.getElementById('btn-confirmar');
+	var btnCancelar = document.getElementById('btn-cancelar');
+	btnConfirmar.onclick = function() {
+		var contenedor;
+		contenedor = document.getElementById('contenido');
+		var ajax = new XMLHttpRequest() //crea el objetov ajax 
+		ajax.open("get", 'libros/delete.php?id='+id, true);
+		ajax.onreadystatechange = function () {
+			if (ajax.readyState == 4) {
+				modal.style.visibility = 'hidden';
+				contenedor.innerHTML = ajax.responseText;
+			}
+		}
+		ajax.send();
+	}
+	btnCancelar.onclick = function() {
+		modal.style.visibility = 'hidden';
+	}
+}
 
 // ════════════════════════════════════════════════════════
 //  USUARIOS
@@ -141,7 +160,7 @@ function createUsuario() {
 function cargarEditarUsuario(id) {
 	var contenedor;
 	contenedor = document.getElementById('contenido');
-	fetch('usuarios/form-editar.php?id='+id)
+	fetch('usuarios/editar.php?id='+id)
 		.then(response => response.text())
 		.then(data => contenedor.innerHTML=data);
 }
@@ -149,11 +168,34 @@ function cargarEditarUsuario(id) {
 function updateUsuario() {
 	var contenedor;
 	contenedor = document.getElementById('contenido');
-	formeditar = document.getElementById('form-editar');
+	formeditar = document.getElementById('editar');
 	var datos = new FormData(formeditar);
 	fetch("usuarios/update.php",
 		{method:"POST",
 		body:datos})
 		.then(response => response.text())
 		.then(data => contenedor.innerHTML=data);
+}
+
+function eliminarUsuario(id) {
+	var modal = document.querySelector('.modal');
+	modal.style.visibility = 'visible';
+	var btnConfirmar = document.getElementById('btn-confirmar');
+	var btnCancelar = document.getElementById('btn-cancelar');
+	btnConfirmar.onclick = function() {
+		var contenedor;
+		contenedor = document.getElementById('contenido');
+		var ajax = new XMLHttpRequest() //crea el objetov ajax 
+		ajax.open("get", 'usuarios/delete.php?id='+id, true);
+		ajax.onreadystatechange = function () {
+			if (ajax.readyState == 4) {
+				modal.style.visibility = 'hidden';
+				contenedor.innerHTML = ajax.responseText;
+			}
+		}
+		ajax.send();
+	}
+	btnCancelar.onclick = function() {
+		modal.style.visibility = 'hidden';
+	}
 }
